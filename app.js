@@ -2,6 +2,7 @@
 const http = require("http");
 const queryString = require("querystring");
 const staticServer = require("./staticServer");
+const dynamicServer = require("./dynamicServer");
 
 //2、创建服务对象
 const server = http.createServer();
@@ -30,6 +31,8 @@ server.on("request", (req, res) => {
             staticServer.readFile(req, res);
         } else if (reqPath === "/node.svg") {
             staticServer.readFile(req, res);
+        } else if (reqPath === "/dynamic.html") {
+            dynamicServer.renderHtml(req, res);
         } else {
             res.end(`请求方法为:${method} 参数为:${JSON.stringify(paramsObj)}`);
         }

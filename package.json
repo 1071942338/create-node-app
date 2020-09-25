@@ -18,5 +18,8 @@
   "homepage": "https://github.com/1071942338/create-node-app#readme",
   "devDependencies": {
     "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "ejs": "^3.1.5"
   }
 }
