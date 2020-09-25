@@ -1,6 +1,7 @@
 //1.导入模块
 const http = require("http");
 const queryString = require("querystring");
+const staticServer = require("./staticServer");
 
 //2、创建服务对象
 const server = http.createServer();
@@ -14,13 +15,24 @@ server.on("request", (req, res) => {
     const method = req.method.toLowerCase();
     //获取请求地址
     const reqUrl = req.url;
+    const reqUrlSplit = reqUrl.split("?");
+    const reqPath = reqUrlSplit[0];
+
     //根据不同请求类型，进行相应处理
     if (method === "get") {
         //通过字符串分割获取参数部分
-        const paramsStr = reqUrl.split("?")[1];
+        const paramsStr = reqUrlSplit[1];
         //通过 querystring ，解析成对象，方便使用
         const paramsObj = queryString.parse(paramsStr);
-        res.end(`请求方法为:${method} 参数为:${JSON.stringify(paramsObj)}`);
+        if (reqPath === "/static.html") {
+            staticServer.readFile(req, res);
+        } else if (reqPath === "/mime.json") {
+            staticServer.readFile(req, res);
+        } else if (reqPath === "/node.svg") {
+            staticServer.readFile(req, res);
+        } else {
+            res.end(`请求方法为:${method} 参数为:${JSON.stringify(paramsObj)}`);
+        }
     } else if (method === "post") {
         //请求体通过监听 'data' 和 'end' 事件,拼接数据流并且把它转化为字符串
         let paramsBuff = [];
