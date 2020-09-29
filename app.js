@@ -47,28 +47,52 @@ const serverHandle = (req, res) => {
         .then(() => {
             //根据不同请求类型，进行相应处理
             if (req.method === "get") {
-                console.log(req.path);
-                if (req.path === "/static.html") {
-                    staticServer.readFile(req, res);
-                } else if (req.path === "/mime.json") {
-                    staticServer.readFile(req, res);
-                } else if (req.path === "/node.svg") {
-                    staticServer.readFile(req, res);
-                } else if (req.path === "/dynamic.html") {
-                    dynamicServer.renderHtml(req, res);
+                if (req.path === "/login") {
+                    //用户登录接口
+                    if (req.query.account && req.query.password) {
+                        const obj = {
+                            code: 1,
+                            msg: "登录成功",
+                        };
+                        res.end(JSON.stringify(obj));
+                    } else {
+                        const obj = {
+                            code: 0,
+                            msg: "登录失败",
+                        };
+                        res.end(JSON.stringify(obj));
+                    }
+                } else if (req.path === "/goodList") {
+                    //商品列表接口
+                    const list = ["商品1", "商品2", "商品3", "商品4"];
+                    const obj = {
+                        code: 1,
+                        msg: "成功",
+                        data: list,
+                    };
+                    res.end(JSON.stringify(obj));
                 } else {
-                    res.end(
-                        `请求方法为:${req.method} 参数为:${JSON.stringify(
-                            req.query
-                        )}`
-                    );
+                    res.end(`404 Not Found`);
                 }
             } else if (req.method === "post") {
-                res.end(
-                    `请求方法为:${req.method} 参数为:${JSON.stringify(
-                        req.body
-                    )}`
-                );
+                //用户注册接口
+                if (req.path === "/register") {
+                    if (req.body.account && req.body.password) {
+                        const obj = {
+                            code: 1,
+                            msg: "注册成功",
+                        };
+                        res.end(JSON.stringify(obj));
+                    } else {
+                        const obj = {
+                            code: 0,
+                            msg: "注册失败",
+                        };
+                        res.end(JSON.stringify(obj));
+                    }
+                } else {
+                    res.end(`404 Not Found`);
+                }
             } else {
                 res.end(`404 Not Found`);
             }
